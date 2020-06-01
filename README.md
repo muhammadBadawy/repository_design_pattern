@@ -1,21 +1,38 @@
-Task App Built w/ Laravel and Vue 2
+Store Management
 ===
 
-Link to Medium article: [Build a Task List with Laravel 5.4 and Vue 2](https://medium.com/@connorleech/build-a-task-list-with-laravel-5-4-and-vue-2-9be0bba06801)
+This system consists of :
 
-![](https://cdn-images-1.medium.com/max/800/1*K4ql54DReAe8bguU0rTXtQ.png)
+- Users
+- Branches
+- Emplyees
+- Items
+- Categores
+- Storage
+- Transactions
 
-### Todo
+The system uses the repository design pattern to help manage the transactions of the system and updating the quantities of the products.
 
-- Admin panel ([tutorial](https://nick-basile.com/blog/post/how-to-build-an-admin-in-laravel-using-tdd))
+And To manage viewing the available and unavailable categories.
 
-- [ ] Add pagination using [hootlex/vuejs-paginator](https://github.com/hootlex/vuejs-paginator) (can also see helpful [laracast episode](https://laracasts.com/series/lets-build-a-forum-with-laravel/episodes/16) for building from scratch)
+Then viewing lists of 1 to many relationships using the repository design pattern.
 
-- [ ] Edit tasks
+And automating creating storages (empty) of items whenever the item added to the system
 
-- [ ] Search tasks
+Handling the change of quantities of items in the branches and storeges using the repository
 
-- [ ] Task filters
+
+- Admin panel ![](home.png)
+
+
+- An example of a CRUD ![](crud.png)
+
+
+- Create ![](create.png)
+
+
+- Show ![](show.png)
+
 
 
 # repository_design_pattern
