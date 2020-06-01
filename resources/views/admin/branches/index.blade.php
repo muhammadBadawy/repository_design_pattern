@@ -31,7 +31,7 @@
                           <table class="table datatable-normal">
                               <thead>
                                   <tr>
-                                      <th>#</th><th>{{ trans('branches.title') }}</th<th>{{ trans('branches.address') }}</th><th>Actions</th>
+                                      <th>#</th><th>{{ trans('branches.title') }}</th><th>{{ trans('branches.address') }}</th><th>Actions</th>
                                   </tr>
                               </thead>
                               <tbody>
