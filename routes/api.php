@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::resource('tasks', 'TaskController');
+Route::resource('branches', 'BranchController');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

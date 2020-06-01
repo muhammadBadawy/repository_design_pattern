@@ -18,7 +18,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')
     ->name('home');
 
-Route::get('/admin', 'AdminController@admin')
-    ->middleware('is_admin')
-    ->name('admin');
-
+Route::resource('/admin/branches', 'BranchController');
+Route::resource('/admin/categories', 'CategoryController');
+Route::resource('/admin/items', 'ItemController');
+Route::resource('/admin/employees', 'EmployeeController');
+Route::resource('/admin/item_transactions', 'Item_transactionController');
+Route::resource('/admin/item_branches', 'Item_branchController');

@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>window.Laravel = { csrfToken: '{{ csrf_token() }}' }</script>
 
-    <title>{{ config('app.name', 'Laravel Vue Task App') }}</title>
+    <title>{{ config('app.name', 'Laravel Vue Branch App') }}</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -91,6 +91,5 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
 </body>
 </html>

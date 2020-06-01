@@ -1391,8 +1391,8 @@ module.exports = __webpack_require__(246);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_TaskList_vue__ = __webpack_require__(41);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_TaskList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_TaskList_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_BranchList_vue__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__components_BranchList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__components_BranchList_vue__);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -1415,7 +1415,7 @@ window.Vue = __webpack_require__(38);
 var app = new Vue({
   el: '#app',
   components: {
-    TaskList: __WEBPACK_IMPORTED_MODULE_0__components_TaskList_vue___default.a
+    BranchList: __WEBPACK_IMPORTED_MODULE_0__components_BranchList_vue___default.a
   }
 });
 
@@ -33980,19 +33980,19 @@ function flushCallbacks () {
   }
 }
 
-// Here we have async deferring wrappers using both micro and macro tasks.
-// In < 2.4 we used micro tasks everywhere, but there are some scenarios where
-// micro tasks have too high a priority and fires in between supposedly
+// Here we have async deferring wrappers using both micro and macro branches.
+// In < 2.4 we used micro branches everywhere, but there are some scenarios where
+// micro branches have too high a priority and fires in between supposedly
 // sequential events (e.g. #4521, #6690) or even between bubbling of the same
-// event (#6566). However, using macro tasks everywhere also has subtle problems
+// event (#6566). However, using macro branches everywhere also has subtle problems
 // when state is changed right before repaint (e.g. #6813, out-in transitions).
-// Here we use micro task by default, but expose a way to force macro task when
+// Here we use micro branch by default, but expose a way to force macro branch when
 // needed (e.g. in event handlers attached by v-on).
 var microTimerFunc;
 var macroTimerFunc;
-var useMacroTask = false;
+var useMacroBranch = false;
 
-// Determine (macro) Task defer implementation.
+// Determine (macro) Branch defer implementation.
 // Technically setImmediate should be the ideal choice, but it's only available
 // in IE. The only polyfill that consistently queues the callback after all DOM
 // events triggered in the same loop is by using MessageChannel.
@@ -34019,7 +34019,7 @@ if (typeof setImmediate !== 'undefined' && isNative(setImmediate)) {
   };
 }
 
-// Determine MicroTask defer implementation.
+// Determine MicroBranch defer implementation.
 /* istanbul ignore next, $flow-disable-line */
 if (typeof Promise !== 'undefined' && isNative(Promise)) {
   var p = Promise.resolve();
@@ -34027,9 +34027,9 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
     p.then(flushCallbacks);
     // in problematic UIWebViews, Promise.then doesn't completely break, but
     // it can get stuck in a weird state where callbacks are pushed into the
-    // microtask queue but the queue isn't being flushed, until the browser
+    // microbranch queue but the queue isn't being flushed, until the browser
     // needs to do some other work, e.g. handle a timer. Therefore we can
-    // "force" the microtask queue to be flushed by adding an empty timer.
+    // "force" the microbranch queue to be flushed by adding an empty timer.
     if (isIOS) { setTimeout(noop); }
   };
 } else {
@@ -34039,13 +34039,13 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 
 /**
  * Wrap a function so that if any code inside triggers state change,
- * the changes are queued using a Task instead of a MicroTask.
+ * the changes are queued using a Branch instead of a MicroBranch.
  */
-function withMacroTask (fn) {
-  return fn._withTask || (fn._withTask = function () {
-    useMacroTask = true;
+function withMacroBranch (fn) {
+  return fn._withBranch || (fn._withBranch = function () {
+    useMacroBranch = true;
     var res = fn.apply(null, arguments);
-    useMacroTask = false;
+    useMacroBranch = false;
     return res
   })
 }
@@ -34065,7 +34065,7 @@ function nextTick (cb, ctx) {
   });
   if (!pending) {
     pending = true;
-    if (useMacroTask) {
+    if (useMacroBranch) {
       macroTimerFunc();
     } else {
       microTimerFunc();
@@ -39205,7 +39205,7 @@ function add$1 (
   capture,
   passive
 ) {
-  handler = withMacroTask(handler);
+  handler = withMacroBranch(handler);
   if (once$$1) { handler = createOnceHandler(handler, event, capture); }
   target$1.addEventListener(
     event,
@@ -39224,7 +39224,7 @@ function remove$2 (
 ) {
   (_target || target$1).removeEventListener(
     event,
-    handler._withTask || handler,
+    handler._withBranch || handler,
     capture
   );
 }
@@ -43134,8 +43134,8 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     }
 
     var nextHandle = 1; // Spec says greater than zero
-    var tasksByHandle = {};
-    var currentlyRunningATask = false;
+    var branchesByHandle = {};
+    var currentlyRunningABranch = false;
     var doc = global.document;
     var registerImmediate;
 
@@ -43149,20 +43149,20 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
       for (var i = 0; i < args.length; i++) {
           args[i] = arguments[i + 1];
       }
-      // Store and register the task
-      var task = { callback: callback, args: args };
-      tasksByHandle[nextHandle] = task;
+      // Store and register the branch
+      var branch = { callback: callback, args: args };
+      branchesByHandle[nextHandle] = branch;
       registerImmediate(nextHandle);
       return nextHandle++;
     }
 
     function clearImmediate(handle) {
-        delete tasksByHandle[handle];
+        delete branchesByHandle[handle];
     }
 
-    function run(task) {
-        var callback = task.callback;
-        var args = task.args;
+    function run(branch) {
+        var callback = branch.callback;
+        var args = branch.args;
         switch (args.length) {
         case 0:
             callback();
@@ -43184,20 +43184,20 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
     function runIfPresent(handle) {
         // From the spec: "Wait until any invocations of this algorithm started before this one have completed."
-        // So if we're currently running a task, we'll need to delay this invocation.
-        if (currentlyRunningATask) {
+        // So if we're currently running a branch, we'll need to delay this invocation.
+        if (currentlyRunningABranch) {
             // Delay by doing a setTimeout. setImmediate was tried instead, but in Firefox 7 it generated a
             // "too much recursion" error.
             setTimeout(runIfPresent, 0, handle);
         } else {
-            var task = tasksByHandle[handle];
-            if (task) {
-                currentlyRunningATask = true;
+            var branch = branchesByHandle[handle];
+            if (branch) {
+                currentlyRunningABranch = true;
                 try {
-                    run(task);
+                    run(branch);
                 } finally {
                     clearImmediate(handle);
-                    currentlyRunningATask = false;
+                    currentlyRunningABranch = false;
                 }
             }
         }
@@ -43265,7 +43265,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
         var html = doc.documentElement;
         registerImmediate = function(handle) {
             // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
-            // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
+            // into the document. Do so, thus queuing up the branch. Remember to clean up once it's been called.
             var script = doc.createElement("script");
             script.onreadystatechange = function () {
                 runIfPresent(handle);
@@ -43341,7 +43341,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/TaskList.vue"
+Component.options.__file = "resources/assets/js/components/BranchList.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -43409,42 +43409,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             loading: true,
             list: [],
-            task: {
+            branch: {
                 id: '',
                 body: ''
             }
         };
     },
     created: function created() {
-        this.fetchTaskList();
+        this.fetchBranchList();
     },
 
 
     methods: {
-        fetchTaskList: function fetchTaskList() {
+        fetchBranchList: function fetchBranchList() {
             var _this = this;
 
-            axios.get('api/tasks').then(function (res) {
+            axios.get('api/branches').then(function (res) {
                 _this.list = res.data;
                 _this.loading = false;
             }).catch(function (err) {
                 return console.error(err);
             });;
         },
-        createTask: function createTask() {
+        createBranch: function createBranch() {
             var _this2 = this;
 
-            axios.post('api/tasks', this.task).then(function (res) {
-                _this2.task.body = '';
+            axios.post('api/branches', this.branch).then(function (res) {
+                _this2.branch.body = '';
             }).catch(function (err) {
                 return console.error(err);
             });
         },
-        deleteTask: function deleteTask(id) {
+        deleteBranch: function deleteBranch(id) {
             var _this3 = this;
 
-            axios.delete('api/tasks/' + id).then(function (res) {
-                _this3.fetchTaskList();
+            axios.delete('api/branches/' + id).then(function (res) {
+                _this3.fetchBranchList();
             }).catch(function (err) {
                 return console.error(err);
             });
@@ -50906,9 +50906,9 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("h1", [_vm._v("My Tasks")]),
+    _c("h1", [_vm._v("My Branches")]),
     _vm._v(" "),
-    _c("h4", [_vm._v("New Task")]),
+    _c("h4", [_vm._v("New Branch")]),
     _vm._v(" "),
     _c(
       "form",
@@ -50917,7 +50917,7 @@ var render = function() {
         on: {
           submit: function($event) {
             $event.preventDefault()
-            _vm.createTask()
+            _vm.createBranch()
           }
         }
       },
@@ -50928,19 +50928,19 @@ var render = function() {
               {
                 name: "model",
                 rawName: "v-model",
-                value: _vm.task.body,
-                expression: "task.body"
+                value: _vm.branch.body,
+                expression: "branch.body"
               }
             ],
             staticClass: "form-control",
             attrs: { type: "text", name: "body", autofocus: "" },
-            domProps: { value: _vm.task.body },
+            domProps: { value: _vm.branch.body },
             on: {
               input: function($event) {
                 if ($event.target.composing) {
                   return
                 }
-                _vm.$set(_vm.task, "body", $event.target.value)
+                _vm.$set(_vm.branch, "body", $event.target.value)
               }
             }
           }),
@@ -50950,7 +50950,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("h4", [_vm._v("All Tasks")]),
+    _c("h4", [_vm._v("All Branches")]),
     _vm._v(" "),
     _vm.loading
       ? _c("div", { staticClass: "row text-center" }, [_c("rotate-square2")], 1)
@@ -50962,13 +50962,13 @@ var render = function() {
           { staticClass: "list-group" },
           [
             _vm.list.length === 0
-              ? _c("li", [_vm._v("There are no tasks yet!")])
+              ? _c("li", [_vm._v("There are no branches yet!")])
               : _vm._e(),
             _vm._v(" "),
-            _vm._l(_vm.list, function(task, index) {
+            _vm._l(_vm.list, function(branch, index) {
               return _c("li", { staticClass: "list-group-item" }, [
                 _vm._v(
-                  "\n\n            " + _vm._s(task.body) + "\n\n            "
+                  "\n\n            " + _vm._s(branch.body) + "\n\n            "
                 ),
                 _c(
                   "button",
@@ -50976,7 +50976,7 @@ var render = function() {
                     staticClass: "btn btn-danger btn-xs pull-right",
                     on: {
                       click: function($event) {
-                        _vm.deleteTask(task.id)
+                        _vm.deleteBranch(branch.id)
                       }
                     }
                   },
@@ -50999,7 +50999,7 @@ var staticRenderFns = [
       _c(
         "button",
         { staticClass: "btn btn-primary", attrs: { type: "submit" } },
-        [_vm._v("New Task")]
+        [_vm._v("New Branch")]
       )
     ])
   }

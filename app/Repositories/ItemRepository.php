@@ -1,8 +1,10 @@
 <?php namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Branch;
+use App\Item_branch;
 
-class Repository implements RepositoryInterface
+class ItemRepository implements RepositoryInterface
 {
     // model property on class instances
     protected $model;
@@ -19,16 +21,36 @@ class Repository implements RepositoryInterface
         return $this->model->all();
     }
 
+    public function allForList()
+    {
+        return $this->model->pluck('name', 'id');
+    }
+
     // create a new record in the database
     public function create(array $data)
     {
-        return $this->model->create($data);
+        // return $this->model->create($data);
+
+        $created_item =  $this->model->create($data);
+        $branches = (new BranchRepository(new Branch))->all();
+        $item_branch = new Item_branchRepository(new Item_branch);
+
+        foreach($branches as $branch){
+          $item_branch->create([
+            'item_id' => $created_item->id,
+            'branch_id' => $branch->id,
+            'initial_quantity' => 0,
+            'current_quantity' => 0
+          ]);
+        }
+
+        return $created_item;
     }
 
     // update record in the database
     public function update(array $data, $id)
     {
-        $record = $this->find($id);
+        $record = $this->model->find($id);
         return $record->update($data);
     }
 
@@ -41,7 +63,7 @@ class Repository implements RepositoryInterface
     // show the record with the given id
     public function show($id)
     {
-        return $this->model-findOrFail($id);
+        return $this->model->findOrFail($id);
     }
 
     // Get the associated model
@@ -61,5 +83,14 @@ class Repository implements RepositoryInterface
     public function with($relations)
     {
         return $this->model->with($relations);
+    }
+
+    public function conditions($conditions)
+    {
+        $model = $this->model;
+        foreach ($conditions as $key => $condition) {
+          $model = $model->where($key, $condition);
+        }
+        return $model->first();
     }
 }
