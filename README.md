@@ -1,4 +1,4 @@
-Store Management
+Store Management using repository_design_pattern
 ===
 
 This system consists of :
@@ -8,8 +8,8 @@ This system consists of :
 - Emplyees
 - Items
 - Categores
-- Storage
-- Transactions
+- Storage (item and branch)
+- Transactions (item transaction at a branch)
 
 The system uses the repository design pattern to help manage the transactions of the system and updating the quantities of the products.
 
@@ -22,17 +22,19 @@ And automating creating storages (empty) of items whenever the item added to the
 Handling the change of quantities of items in the branches and storeges using the repository
 
 
-- Admin panel ![](home.png)
+Admin panel
+![](home.png)
 
 
-- An example of a CRUD ![](crud.png)
+An example of a CRUD
+![](crud.png)
 
 
-- Create ![](create.png)
+Create
+![](create.png)
 
 
-- Show ![](show.png)
+Show
+![](show.png)
 
 
-
-# repository_design_pattern
