@@ -21,20 +21,26 @@ And automating creating storages (empty) of items whenever the item added to the
 
 Handling the change of quantities of items in the branches and storeges using the repository
 
+And the repository design pattern is used a lot to facilitate the implementation
+
 
 Admin panel
+
 ![](home.png)
 
 
 An example of a CRUD
+
 ![](crud.png)
 
 
 Create
+
 ![](create.png)
 
 
 Show
+
 ![](show.png)
 
 
